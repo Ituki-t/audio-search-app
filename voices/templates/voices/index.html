@@ -1,0 +1,21 @@
+<h2 class="my-5">ファイル一覧</h2>
+        {% if voice %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ファイル名</th>
+                <th>アップロード日時</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for v in voice %}
+            <tr>
+                <td>{{v.title}}</td>
+                <td>{{v.uploaded_at}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>ファイルは登録されていません</p>
+        {% endif %}
