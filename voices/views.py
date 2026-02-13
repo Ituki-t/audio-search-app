@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
+import os
+
+from django.http import FileResponse
 from .models import Voice
 from .forms import UploadVoiceForm
 
@@ -21,3 +24,13 @@ def upload(request):
     else:
         form = UploadVoiceForm()
     return render(request, 'voices/upload.html', {'form': form})
+
+
+def download(request, voice_id):
+    voice = get_object_or_404(Voice, pk=voice_id)
+    res = FileResponse(
+        open(voice.audio_file.path, 'rb'),
+        as_attachment=True,
+        filename=os.path.basename(voice.audio_file.name)
+    )
+    return res

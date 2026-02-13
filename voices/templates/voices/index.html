@@ -5,6 +5,7 @@
             <thead>
             <tr>
                 <th>ファイル名</th>
+                <th>ダウンロード</th>
                 <th>アップロード日時</th>
             </tr>
             </thead>
@@ -12,6 +13,7 @@
             {% for v in voice %}
             <tr>
                 <td>{{v.title}}</td>
+                <td><a href="{% url 'voices:download' v.id %}" class="btn btn-secondary">ダウンロード</a></td>
                 <td>{{v.uploaded_at}}</td>
             </tr>
             {% endfor %}
