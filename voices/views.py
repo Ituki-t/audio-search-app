@@ -19,7 +19,10 @@ def upload(request):
     if request.method == 'POST':
         form = UploadVoiceForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            voice = form.save(commit=False)
+            title = request.FILES['audio_file'].name
+            voice.title = title
+            voice.save()
             return redirect('voices:index')
     else:
         form = UploadVoiceForm()
