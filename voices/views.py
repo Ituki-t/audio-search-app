@@ -38,3 +38,12 @@ def download(request, voice_id):
         filename=os.path.basename(voice.audio_file.name)
     )
     return res
+
+
+def delete(request, voice_id):
+    if request.method == 'POST':
+        voice = get_object_or_404(Voice, pk=voice_id)
+        voice.delete()
+        return redirect('voices:index')
+    else:
+        return render(request, 'voices/confirm_delete.html', {'voice_id': voice_id})

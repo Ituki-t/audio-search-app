@@ -6,6 +6,7 @@
             <tr>
                 <th>ファイル名</th>
                 <th>アップロード日時</th>
+                <th>削除</th>
             </tr>
             </thead>
             <tbody>
@@ -13,6 +14,7 @@
             <tr>
                 <td><a href="{% url 'voices:download' v.id %}">{{v.title}}</a></td>
                 <td>{{v.uploaded_at}}</td>
+                <td><a href="{% url 'voices:delete' v.id %}" class="btn btn-danger btn-sm">削除</a></td>
             </tr>
             {% endfor %}
             </tbody>
