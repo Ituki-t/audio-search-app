@@ -7,6 +7,7 @@ from django.http import FileResponse
 from .models import Voice
 from .forms import UploadVoiceForm
 from .tasks import transcribe_voice
+from .tasks import text2es
 
 
 # Create your views here.
@@ -25,6 +26,7 @@ def upload(request):
             voice.title = title
             voice.save()
             transcribe_voice.delay(voice.id)
+            # text2es("voice_index", voice.id, transcribe)
             return redirect('voices:index')
     else:
         form = UploadVoiceForm()
