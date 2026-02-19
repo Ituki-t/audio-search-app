@@ -12,9 +12,12 @@ from .es_service import search_docs_fulltext
 # Create your views here.
 
 def index(request):
-    query = request.GET.get('q')
-    if query:
-        voice_ids = search_docs_fulltext(query)
+    name_query = request.GET.get('name_query')
+    text_query = request.GET.get('text_query')
+    if name_query:
+        voices = Voice.objects.filter(title__icontains=name_query)
+    elif text_query:
+        voice_ids = search_docs_fulltext(text_query)
         voices = Voice.objects.filter(id__in=voice_ids)
     else:
         voices = Voice.objects.all()
