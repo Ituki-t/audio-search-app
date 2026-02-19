@@ -1,4 +1,5 @@
 # voice-search-app
+- [環境構築のGitHubリポジトリ](https://github.com/Ituki-t/voice-search-env)
 
 ## refarence
 - ChatGPT
