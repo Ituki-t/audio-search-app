@@ -1,6 +1,12 @@
 <a href="{% url 'voices:upload' %}" class="btn btn-primary my-3">ファイルをアップロード</a>
+
+<form class="d-flex" role="search"  method="GET">
+    <input class="form-control me-2" type="search" name="q" placeholder="audioファイル内容から検索" aria-label="Search" required>
+    <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
+
 <h2 class="my-5">ファイル一覧</h2>
-        {% if voice %}
+        {% if voices %}
         <table class="table">
             <thead>
             <tr>
@@ -10,7 +16,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for v in voice %}
+            {% for v in voices %}
             <tr>
                 <td><a href="{% url 'voices:download' v.id %}">{{v.title}}</a></td>
                 <td>{{v.uploaded_at}}</td>

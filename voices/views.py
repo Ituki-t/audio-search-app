@@ -7,12 +7,18 @@ from django.http import FileResponse
 from .models import Voice
 from .forms import UploadVoiceForm
 from .tasks import transcribe_voice
+from .es_service import search_docs_fulltext
 
 # Create your views here.
 
 def index(request):
-    voice = Voice.objects.all()
-    return render(request, 'voices/index.html', {'voice': voice})
+    query = request.GET.get('q')
+    if query:
+        voice_ids = search_docs_fulltext(query)
+        voices = Voice.objects.filter(id__in=voice_ids)
+    else:
+        voices = Voice.objects.all()
+    return render(request, 'voices/index.html', {'voices': voices})
 
 
 def upload(request):
