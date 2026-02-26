@@ -1,5 +1,5 @@
 # audio-search-app
-- [環境構築のGitHubリポジトリ](https://github.com/Ituki-t/audio-search-env.git)
+- [環境構築のGitHubリポジトリ](https://github.com/Ituki-t/audio-search-env-meilisearch.git)
 
 ## This projects about
 - Meilisearchを用いて音声ファイルをtext化してファイル内容から音声ファイルを検索する
