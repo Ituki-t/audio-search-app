@@ -22,8 +22,8 @@ def transcribe_voice(voice_id):
 
     segments = transcribe_audio_file(voice.audio_file.path)
     for segment in segments:
-        add_audio_documents(voice, segment)
-        save_whisper_segment(voice, segment)
+        seg = save_whisper_segment(voice, segment)
+        add_audio_documents(seg)
 
     voice.transcribe_status = "done"
     voice.save(update_fields=['transcribe_status'])

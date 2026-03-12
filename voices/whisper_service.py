@@ -31,3 +31,4 @@ def save_whisper_segment(voice, segment):
         text=segment['text']
     )
     seg.save()
+    return seg
