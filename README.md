@@ -11,6 +11,12 @@ from voices.meili_service import recreate_index
 recreate_index()
 ```
 
+# git
+- about push
+```bash
+git push -u meili meili
+```
+
 ## refarence
 - ChatGPT
 - [https://docs.djangoproject.com/ja/6.0/topics/files/](https://docs.djangoproject.com/ja/6.0/topics/files/)(2026/02/12)
