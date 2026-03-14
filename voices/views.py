@@ -5,6 +5,7 @@ import os
 
 from django.http import FileResponse
 from .models import Voice
+from .models import Segment
 from .forms import UploadVoiceForm
 from .tasks import transcribe_voice
 from .meili_service import search_audio_ids
@@ -57,7 +58,9 @@ def delete(request, voice_id):
 
 def detail(request, voice_id):
     voice = get_object_or_404(Voice, pk=voice_id)
+    segments = Segment.objects.filter(voice=voice).order_by("id") # start_timeでソートしてもいい
     context = {
         'voice': voice,
+        'segments': segments,
     }
     return render(request, 'voices/detail.html', context)

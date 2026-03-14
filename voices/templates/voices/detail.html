@@ -14,7 +14,9 @@
                 <p class="card-text">Title : </p>
                 <h5 class="card-title">{{ voice.title }}</h5>
                 <p class="card-text">text : </p>
-                <!-- <p class="card-text">{{ voice.segments.text  }}</p> -->
+                {% for segment in segments %}
+                    <p class="card-text">{{ segment.text }}</p>
+                {% endfor %}
             </div>
             <div class="card-footer">
                 Updated at : {{ voice.updated_at }}
