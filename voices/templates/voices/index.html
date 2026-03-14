@@ -44,7 +44,8 @@
             <tbody>
             {% for v in voices %}
             <tr>
-                <td><a href="{% url 'voices:download' v.id %}">{{v.title}}</a></td>
+                <!-- <td><a href="{% url 'voices:download' v.id %}">{{v.title}}</a></td> -->
+                <td><a href="{% url 'voices:detail' v.id %}">{{v.title}}</a></td>
                 <td>{{v.uploaded_at}}</td>
                 <td><a href="{% url 'voices:delete' v.id %}" class="btn btn-danger btn-sm">削除</a></td>
             </tr>
