@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="my-5">{{ page_title }}</h1>
+<h1 class="my-5">テキストを編集</h1>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">投稿</button>
+    <button type="submit" class="btn btn-primary">編集</button>
 </form>
 
 {% endblock content %}
