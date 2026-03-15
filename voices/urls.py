@@ -10,5 +10,6 @@ urlpatterns = [
     # path('voice/<int:voice_id>/', views.voice_detail, name='voice_detail'),
     path('<int:voice_id>/delete/', views.delete, name='delete'),
     path('<int:voice_id>/', views.detail, name='detail'),
+    path('<int:voice_id>/<int:segment_id>/update_text/', views.update_segment_text, name='update_text'),
 
 ]

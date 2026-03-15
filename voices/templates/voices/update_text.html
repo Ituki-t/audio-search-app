@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ page_title }}
+{% endblock %}
+
+{% block content %}
+<h1 class="my-5">{{ page_title }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">投稿</button>
+</form>
+
+{% endblock content %}

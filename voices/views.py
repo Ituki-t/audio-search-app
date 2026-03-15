@@ -7,6 +7,7 @@ from django.http import FileResponse
 from .models import Voice
 from .models import Segment
 from .forms import UploadVoiceForm
+from .forms import UpdateSegmentTextForm
 from .tasks import transcribe_voice
 from .meili_service import search_audio_ids
 
@@ -64,3 +65,22 @@ def detail(request, voice_id):
         'segments': segments,
     }
     return render(request, 'voices/detail.html', context)
+
+
+def update_segment_text(request, voice_id, segment_id):
+    voice = get_object_or_404(Voice, pk=voice_id)
+    segment = get_object_or_404(Segment, pk=segment_id, voice=voice)
+    if request.method == 'POST':
+        form = UpdateSegmentTextForm(request.POST, instance=segment)
+        if form.is_valid():
+            form.save()
+            return redirect('voices:detail', voice_id=voice_id)
+    else:
+        form = UpdateSegmentTextForm(instance=segment)
+
+    context = {
+        'form': form,
+        'voice': voice,
+        'segment': segment,
+    }
+    return render(request, 'voices/update_text.html', context)
