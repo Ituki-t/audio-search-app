@@ -4,7 +4,8 @@ from .models import Segment
 
 from .whisper_service import transcribe_audio_file
 from .whisper_service import save_whisper_segment
-from .meili_service import add_audio_documents
+from .meili_service import add_audio_documents_to_meili
+from .es_service import add_audio_documents_to_es
 
 import logging
 logger = logging.getLogger(__name__)
@@ -23,7 +24,8 @@ def transcribe_voice(voice_id):
     segments = transcribe_audio_file(voice.audio_file.path)
     for segment in segments:
         seg = save_whisper_segment(voice, segment)
-        add_audio_documents(seg)
+        add_audio_documents_to_meili(seg)
+        add_audio_documents_to_es(seg)
 
     voice.transcribe_status = "done"
     voice.save(update_fields=['transcribe_status'])
@@ -32,4 +34,5 @@ def transcribe_voice(voice_id):
 @shared_task
 def update_audio_document(segment_id):
     segment = Segment.objects.get(id=segment_id)
-    add_audio_documents(segment)
+    add_audio_documents_to_meili(segment)
+    add_audio_documents_to_es(segment)

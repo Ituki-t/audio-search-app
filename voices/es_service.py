@@ -33,6 +33,22 @@ def index_voice(voice, text):
         raise
 
 
+def add_audio_documents_to_es(segment):
+    es = get_es()
+    es.index(
+        index = INDEX_NAME,
+        id = segment.id,
+        document = {
+            "title": segment.voice.title,
+            "text": segment.text,
+            "start": segment.start_time,
+            "end": segment.end_time,
+            "voice_id": segment.voice.id
+        },
+        refresh = True,
+    )
+
+
 def search_docs_fulltext(query):
     es = get_es()
     query = {
