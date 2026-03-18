@@ -5,7 +5,7 @@ dotenv.load_dotenv()
 
 audio_index = os.getenv('MEILI_AUDIO_INDEX', 'audio_index')
 
-def add_audio_documents(segment):
+def add_audio_documents_to_meili(segment):
     meili = get_meili()
 
     doc_id = segment.id
