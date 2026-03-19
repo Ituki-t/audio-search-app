@@ -11,13 +11,20 @@ from .forms import UpdateSegmentTextForm
 from .tasks import transcribe_voice
 from .tasks import update_audio_document
 from .meili_service import search_audio_ids
+from .es_service import search_docs_fulltext
 
 # Create your views here.
 
 def index(request):
     query = request.GET.get('text_query')
+    engine_query = request.GET.get('search_engine')
     if query:
-        voice_ids = search_audio_ids(query)
+        if engine_query == "elasticsearch":
+            voice_ids = search_docs_fulltext(query)
+        elif engine_query == "meilisearch":
+            voice_ids = search_audio_ids(query)
+        else:
+            voice_ids = search_docs_fulltext(query) # DEFAULT: es
         voices = Voice.objects.filter(id__in=voice_ids)
     else:
         voices = Voice.objects.all()
