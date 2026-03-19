@@ -4,29 +4,32 @@
 
 <a href="{% url 'voices:upload' %}" class="btn btn-primary my-3">ファイルをアップロード</a>
 
-<ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-        <a href="#name" class="nav-link active text-secondary" id="name-tab" data-bs-toggle="tab" role="tab" aria-controls="detail" aria-selected="true">ファイル名から検索</a>
-    <li class="nav-item" role="presentation">
-        <a href="#text" class="nav-link text-secondary" id="text-tab" data-bs-toggle="tab" role="tab" aria-controls="menu" aria-selected="false">ファイル内容から検索</a>
-    </li>
-</ul>
+<!-- 検索エンジン切り替え(ボタン版) -->
+<form class="my-3" method="GET">
+    <button class="btn btn-secondary" name="search_engine" value="elasticsearch" type="submit">Elasticsearch</button>
+    <button class="btn btn-secondary" name="search_engine" value="meilisearch" type="submit">Meilisearch</button>
+</form>
 
-<div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="name" role="tabpanel" aria-labelledby="name-tab">
-        <form class="d-flex" role="search" method="GET">
-            <input class="form-control me-2" type="search" name="name_query" placeholder="ファイル名から検索" aria-label="Search" required>
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-    </div>
+<!-- 検索エンジン切り替え(セレクトボックス版) -->
+<!-- <form class="my-3" method="GET">
+    <select class="form-select" name="search_engine" aria-label="Search Engine">
+        <option value="" selected>検索エンジンを選択</option>
+        <option value="elasticsearch">Elasticsearch</option>
+        <option value="meilisearch">Meilisearch</option>
+    </select>
+    <input class="btn btn-secondary mt-2" type="submit" value="選択して検索">
+</form> -->
 
-    <div class="tab-pane fade" id="text" role="tabpanel" aria-labelledby="text-tab">
-        <form class="d-flex" role="search"  method="GET">
-            <input class="form-control me-2" type="search" name="text_query" placeholder="ファイル内容から検索" aria-label="Search" required>
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-    </div>
-</div>
+<form class="d-flex" role="search" method="GET">
+    <input class="form-control me-2" type="search" name="name_query" placeholder="ファイル名から検索" aria-label="Search" required>
+    <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
+
+
+<form class="d-flex" role="search"  method="GET">
+    <input class="form-control me-2" type="search" name="text_query" placeholder="ファイル内容から検索" aria-label="Search" required>
+    <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
 
 
 
