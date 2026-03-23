@@ -13,6 +13,7 @@
             <div class="card-body">
                 <p class="card-text">Title : </p>
                 <h5 class="card-title">{{ voice.title }}</h5>
+                <audio controls src="{{ voice.audio_file.url }}"></audio>
                 <p class="card-text">text : </p>
                 <div class="card mb-2">
                     <div class="card-body">
