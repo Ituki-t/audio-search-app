@@ -63,9 +63,35 @@ def search_docs_fulltext(query):
     return results
 
 
+def search_doc_by_es(query):
+    es = get_es()
+    query = {
+        "query": {
+            "match": {
+                "text": query,
+            }
+        }
+    }
+    res = es.search(index=INDEX_NAME, body=query)
+    results = get_voice_segments_by_es(res)
+    return results
+
+
 def get_voice_ids(res):
     results = []
     for hit in res["hits"]["hits"]:
         source = hit["_source"]
         results.append(source["voice_id"])
     return results
+
+
+def get_voice_segments_by_es(res):
+    segments = []
+    for hit in res["hits"]["hits"]:
+        source = hit["_source"]
+        segments.append({
+            "voice_id": source["voice_id"],
+            "start_time": source["start"],
+            "end_time": source["end"],
+        })
+    return segments

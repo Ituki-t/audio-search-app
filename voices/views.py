@@ -12,15 +12,30 @@ from .tasks import transcribe_voice
 from .tasks import update_audio_document
 from .meili_service import search_audio_ids
 from .es_service import search_docs_fulltext
+from .es_service import search_doc_by_es
 
+import logging
+logger = logging.getLogger(__name__)
 # Create your views here.
 
 def index(request):
     query = request.GET.get('text_query')
     engine_query = request.GET.get('search_engine')
+
     if query:
         if engine_query == "elasticsearch":
-            voice_ids = search_docs_fulltext(query)
+            # voice_ids = search_docs_fulltext(query)
+            segs = search_doc_by_es(query)
+            voice_ids = []
+            voice_segments = []
+            for seg in segs:
+                voice_id = seg['voice_id']
+                voice_ids.append(voice_id)
+                voice_segments.append({
+                    "voice_id": voice_id,
+                    "start_time": seg['start_time'],
+                    "end_time": seg['end_time'],
+                })
         elif engine_query == "meilisearch":
             voice_ids = search_audio_ids(query)
         else:
@@ -28,7 +43,12 @@ def index(request):
         voices = Voice.objects.filter(id__in=voice_ids)
     else:
         voices = Voice.objects.all()
-    return render(request, 'voices/index.html', {'voices': voices})
+
+    context = {
+        'voices': voices,
+        'voice_segments': voice_segments,
+    }
+    return render(request, 'voices/index.html', context)
 
 
 def upload(request):
