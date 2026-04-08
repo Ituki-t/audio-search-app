@@ -16,29 +16,6 @@
     <button class="btn btn-outline-success" type="submit">Search</button>
 </form>
 
-<!-- 検索エンジン切り替え(セレクトボックス版) -->
-<!-- <form class="my-3" method="GET">
-    <select class="form-select" name="search_engine" aria-label="Search Engine">
-        <option value="" selected>検索エンジンを選択</option>
-        <option value="elasticsearch">Elasticsearch</option>
-        <option value="meilisearch">Meilisearch</option>
-    </select>
-    <input class="btn btn-secondary mt-2" type="submit" value="選択して検索">
-</form> -->
-
-<!-- <form class="d-flex" role="search" method="GET">
-    <input class="form-control me-2" type="search" name="name_query" placeholder="ファイル名から検索" aria-label="Search" required>
-    <button class="btn btn-outline-success" type="submit">Search</button>
-</form>
-
-
-<form class="d-flex" role="search"  method="GET">
-    <input class="form-control me-2" type="search" name="text_query" placeholder="ファイル内容から検索" aria-label="Search" required>
-    <button class="btn btn-outline-success" type="submit">Search</button>
-</form> -->
-
-
-
 
 <h2 class="my-5">ファイル一覧</h2>
         {% if voices %}
@@ -47,6 +24,7 @@
             <tr>
                 <th>ファイル名</th>
                 <th>アップロード日時</th>
+                <th>START - END</th>
                 <th></th>
             </tr>
             </thead>
@@ -57,17 +35,18 @@
                 <tr>
                     <td><a href="{% url 'voices:detail' v.id %}">{{v.title}}</a></td>
                     <td>{{v.uploaded_at}}</td>
-                    <td>開始: {{ voice_segment.start_time }} - 終了: {{ voice_segment.end_time }}</td>
+                    <td>{{ voice_segment.start_time }} - {{ voice_segment.end_time }}</td>
+                    <td><a href="{% url 'voices:delete' v.id %}" class="btn btn-danger btn-sm">削除</a></td>
+                </tr>
+                <tr>
+                    <td><a href="{% url 'voices:detail' v.id %}">{{v.title}}</a></td>
+                    <td>{{v.uploaded_at}}</td>
+                    <td> - </td>
                     <td><a href="{% url 'voices:delete' v.id %}" class="btn btn-danger btn-sm">削除</a></td>
                 </tr>
                 {% endif %}
                 {% endfor %}
-            <tr>
-                <!-- <td><a href="{% url 'voices:download' v.id %}">{{v.title}}</a></td> -->
-                <td><a href="{% url 'voices:detail' v.id %}">{{v.title}}</a></td>
-                <td>{{v.uploaded_at}}</td>
-                <td><a href="{% url 'voices:delete' v.id %}" class="btn btn-danger btn-sm">削除</a></td>
-            </tr>
+
             {% endfor %}
             </tbody>
         </table>

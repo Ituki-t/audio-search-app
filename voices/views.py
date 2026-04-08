@@ -43,6 +43,14 @@ def index(request):
         voices = Voice.objects.filter(id__in=voice_ids)
     else:
         voices = Voice.objects.all()
+        segs = Segment.objects.all()
+        voice_segments = []
+        for seg in segs:
+            voice_segments.append({
+                "voice_id": seg.voice.id,
+                "start_time": seg.start_time,
+                "end_time": seg.end_time,
+            })
 
     context = {
         'voices': voices,
