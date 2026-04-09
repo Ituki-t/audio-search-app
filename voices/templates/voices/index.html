@@ -24,7 +24,8 @@
             <tr>
                 <th>ファイル名</th>
                 <th>アップロード日時</th>
-                <th>START - END</th>
+                <th>START</th>
+                <th>END</th>
                 <th></th>
             </tr>
             </thead>
@@ -36,7 +37,8 @@
                         <tr>
                             <td><a href="{% url 'voices:detail' v.id %}">{{v.title}}</a></td>
                             <td>{{v.uploaded_at}}</td>
-                            <td>{{ voice_segment.start_time }} - {{ voice_segment.end_time }}</td>
+                            <td>{{ voice_segment.start_time }}</td>
+                            <td>{{ voice_segment.end_time }}</td>
                             <td><a href="{% url 'voices:delete' v.id %}" class="btn btn-danger btn-sm">削除</a></td>
                         </tr>
                         {% endif %}
@@ -47,6 +49,7 @@
                     <tr>
                         <td><a href="{% url 'voices:detail' v.id %}">{{v.title}}</a></td>
                         <td>{{v.uploaded_at}}</td>
+                        <td> - </td>
                         <td> - </td>
                         <td><a href="{% url 'voices:delete' v.id %}" class="btn btn-danger btn-sm">削除</a></td>
                     </tr>
