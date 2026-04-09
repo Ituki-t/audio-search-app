@@ -22,6 +22,7 @@ def add_audio_documents_to_meili(segment):
     task_info = meili.wait_for_task(task.task_uid)
     print(task_info)
 
+
 def search_audio_ids(query):
     meili = get_meili()
     results = meili.index(audio_index).search(query)
@@ -29,6 +30,21 @@ def search_audio_ids(query):
     for hit in results['hits']:
         hit_ids.append(hit['voice_id'])
     return hit_ids
+
+
+def search_audio_segments_by_meili(query):
+    meili = get_meili()
+    results = meili.index(audio_index).search(query)
+    hit_segments = []
+    for hit in results['hits']:
+        hit_segments.append({
+            'voice_id': hit['voice_id'],
+            'start_time': hit['start'],
+            'end_time': hit['end'],
+        })
+    print(hit_segments)
+    return hit_segments
+
 
 # use about `python manage.py shell`
 def recreate_index():

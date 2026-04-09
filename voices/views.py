@@ -11,6 +11,7 @@ from .forms import UpdateSegmentTextForm
 from .tasks import transcribe_voice
 from .tasks import update_audio_document
 from .meili_service import search_audio_ids
+from .meili_service import search_audio_segments_by_meili
 from .es_service import search_docs_fulltext
 from .es_service import search_doc_by_es
 
@@ -37,9 +38,32 @@ def index(request):
                     "end_time": seg['end_time'],
                 })
         elif engine_query == "meilisearch":
-            voice_ids = search_audio_ids(query)
+            # voice_ids = search_audio_ids(query)
+            segs = search_audio_segments_by_meili(query)
+            voice_ids = []
+            voice_segments = []
+            for seg in segs:
+                voice_id = seg['voice_id']
+                voice_ids.append(voice_id)
+                voice_segments.append({
+                    "voice_id": voice_id,
+                    "start_time": seg['start_time'],
+                    "end_time": seg['end_time'],
+                })
+            print(voice_segments)
         else:
-            voice_ids = search_docs_fulltext(query) # DEFAULT: es
+            # voice_ids = search_docs_fulltext(query) # DEFAULT: es
+            segs = search_doc_by_es(query)
+            voice_ids = []
+            voice_segments = []
+            for seg in segs:
+                voice_id = seg['voice_id']
+                voice_ids.append(voice_id)
+                voice_segments.append({
+                    "voice_id": voice_id,
+                    "start_time": seg['start_time'],
+                    "end_time": seg['end_time'],
+                })
         voices = Voice.objects.filter(id__in=voice_ids)
     else:
         voices = Voice.objects.all()
