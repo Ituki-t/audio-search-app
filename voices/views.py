@@ -66,6 +66,7 @@ def index(request):
     context = {
         'voices': voices,
         'voice_segments': voice_segments,
+        'query': query,
     }
     return render(request, 'voices/index.html', context)
 
