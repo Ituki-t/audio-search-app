@@ -29,25 +29,29 @@
             </tr>
             </thead>
             <tbody>
-            {% for v in voices %}
-                {% for voice_segment in voice_segments %}
-                {% if v.id == voice_segment.voice_id %}
-                <tr>
-                    <td><a href="{% url 'voices:detail' v.id %}">{{v.title}}</a></td>
-                    <td>{{v.uploaded_at}}</td>
-                    <td>{{ voice_segment.start_time }} - {{ voice_segment.end_time }}</td>
-                    <td><a href="{% url 'voices:delete' v.id %}" class="btn btn-danger btn-sm">削除</a></td>
-                </tr>
-<!--                 <tr>
-                    <td><a href="{% url 'voices:detail' v.id %}">{{v.title}}</a></td>
-                    <td>{{v.uploaded_at}}</td>
-                    <td> - </td>
-                    <td><a href="{% url 'voices:delete' v.id %}" class="btn btn-danger btn-sm">削除</a></td>
-                </tr> -->
-                {% endif %}
+            {% if voice_segments %}
+                {% for v in voices %}
+                    {% for voice_segment in voice_segments %}
+                        {% if v.id == voice_segment.voice_id %}
+                        <tr>
+                            <td><a href="{% url 'voices:detail' v.id %}">{{v.title}}</a></td>
+                            <td>{{v.uploaded_at}}</td>
+                            <td>{{ voice_segment.start_time }} - {{ voice_segment.end_time }}</td>
+                            <td><a href="{% url 'voices:delete' v.id %}" class="btn btn-danger btn-sm">削除</a></td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
-
-            {% endfor %}
+            {% else %}
+                {% for v in voices %}
+                    <tr>
+                        <td><a href="{% url 'voices:detail' v.id %}">{{v.title}}</a></td>
+                        <td>{{v.uploaded_at}}</td>
+                        <td> - </td>
+                        <td><a href="{% url 'voices:delete' v.id %}" class="btn btn-danger btn-sm">削除</a></td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
             </tbody>
         </table>
         {% else %}

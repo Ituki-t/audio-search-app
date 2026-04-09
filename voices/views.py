@@ -22,13 +22,12 @@ logger = logging.getLogger(__name__)
 def index(request):
     query = request.GET.get('text_query')
     engine_query = request.GET.get('search_engine')
-
+    voice_ids = []
+    voice_segments = []
     if query:
         if engine_query == "elasticsearch":
             # voice_ids = search_docs_fulltext(query)
             segs = search_doc_by_es(query)
-            voice_ids = []
-            voice_segments = []
             for seg in segs:
                 voice_id = seg['voice_id']
                 voice_ids.append(voice_id)
@@ -40,8 +39,6 @@ def index(request):
         elif engine_query == "meilisearch":
             # voice_ids = search_audio_ids(query)
             segs = search_audio_segments_by_meili(query)
-            voice_ids = []
-            voice_segments = []
             for seg in segs:
                 voice_id = seg['voice_id']
                 voice_ids.append(voice_id)
@@ -54,8 +51,6 @@ def index(request):
         else:
             # voice_ids = search_docs_fulltext(query) # DEFAULT: es
             segs = search_doc_by_es(query)
-            voice_ids = []
-            voice_segments = []
             for seg in segs:
                 voice_id = seg['voice_id']
                 voice_ids.append(voice_id)
@@ -66,15 +61,7 @@ def index(request):
                 })
         voices = Voice.objects.filter(id__in=voice_ids)
     else:
-        voices = Voice.objects.all()
-        segs = Segment.objects.all()
-        voice_segments = []
-        for seg in segs:
-            voice_segments.append({
-                "voice_id": seg.voice.id,
-                "start_time": seg.start_time,
-                "end_time": seg.end_time,
-            })
+        voices = Voice.objects.all().order_by('-uploaded_at')
 
     context = {
         'voices': voices,
