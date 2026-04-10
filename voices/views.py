@@ -22,48 +22,49 @@ logger = logging.getLogger(__name__)
 def index(request):
     query = request.GET.get('text_query')
     engine_query = request.GET.get('search_engine')
-    voice_ids = []
-    voice_segments = []
+    voices = []
+    voice_datas = []
     if query:
         if engine_query == "elasticsearch":
             # voice_ids = search_docs_fulltext(query)
             segs = search_doc_by_es(query)
-            voice_ids, voice_segments = build_voice_data(segs)
-            print("voice_id is ", voice_ids, "voice_segments is ", voice_segments)
+            voice_datas = build_voice_datas(segs)
+            print("voice_datas is ", voice_datas)
         elif engine_query == "meilisearch":
             # voice_ids = search_audio_ids(query)
             segs = search_audio_segments_by_meili(query)
-            voice_ids, voice_segments = build_voice_data(segs)
-            print("voice_id is ", voice_ids, "voice_segments is ", voice_segments)
+            voice_datas = build_voice_datas(segs)
+            print("voice_datas is ", voice_datas)
         else:
             # voice_ids = search_docs_fulltext(query) # DEFAULT: es
             segs = search_doc_by_es(query)
-            voice_ids, voice_segments = build_voice_data(segs)
-            print("voice_id is ", voice_ids, "voice_segments is ", voice_segments)
-        voices = Voice.objects.filter(id__in=voice_ids)
+            voice_datas = build_voice_datas(segs)
+            print("voice_datas is ", voice_datas)
     else:
         voices = Voice.objects.all().order_by('-uploaded_at')
 
     context = {
         'voices': voices,
-        'voice_segments': voice_segments,
+        'voice_datas': voice_datas,
         'query': query,
     }
     return render(request, 'voices/index.html', context)
 
 
-def build_voice_data(segments):
-    voice_ids = []
-    voice_segments = []
+def build_voice_datas(segments):
+    voice_ids = [seg['voice_id'] for seg in segments]
+    voices = Voice.objects.in_bulk(voice_ids)
+
+    rows = []
     for seg in segments:
-        voice_id = seg['voice_id']
-        voice_ids.append(voice_id)
-        voice_segments.append({
-            "voice_id": voice_id,
-            "start_time": seg['start_time'],
-            "end_time": seg['end_time'],
-        })
-    return voice_ids, voice_segments
+        voice = voices.get(seg['voice_id'])
+        if voice:
+            rows.append({
+                'voice': voice,
+                'start_time': seg['start_time'],
+                'end_time': seg['end_time'],
+            })
+    return rows
 
 
 def upload(request):
