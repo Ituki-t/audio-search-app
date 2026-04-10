@@ -28,37 +28,18 @@ def index(request):
         if engine_query == "elasticsearch":
             # voice_ids = search_docs_fulltext(query)
             segs = search_doc_by_es(query)
-            for seg in segs:
-                voice_id = seg['voice_id']
-                voice_ids.append(voice_id)
-                voice_segments.append({
-                    "voice_id": voice_id,
-                    "start_time": seg['start_time'],
-                    "end_time": seg['end_time'],
-                })
+            voice_ids, voice_segments = build_voice_data(segs)
+            print("voice_id is ", voice_ids, "voice_segments is ", voice_segments)
         elif engine_query == "meilisearch":
             # voice_ids = search_audio_ids(query)
             segs = search_audio_segments_by_meili(query)
-            for seg in segs:
-                voice_id = seg['voice_id']
-                voice_ids.append(voice_id)
-                voice_segments.append({
-                    "voice_id": voice_id,
-                    "start_time": seg['start_time'],
-                    "end_time": seg['end_time'],
-                })
-            print(voice_segments)
+            voice_ids, voice_segments = build_voice_data(segs)
+            print("voice_id is ", voice_ids, "voice_segments is ", voice_segments)
         else:
             # voice_ids = search_docs_fulltext(query) # DEFAULT: es
             segs = search_doc_by_es(query)
-            for seg in segs:
-                voice_id = seg['voice_id']
-                voice_ids.append(voice_id)
-                voice_segments.append({
-                    "voice_id": voice_id,
-                    "start_time": seg['start_time'],
-                    "end_time": seg['end_time'],
-                })
+            voice_ids, voice_segments = build_voice_data(segs)
+            print("voice_id is ", voice_ids, "voice_segments is ", voice_segments)
         voices = Voice.objects.filter(id__in=voice_ids)
     else:
         voices = Voice.objects.all().order_by('-uploaded_at')
@@ -69,6 +50,20 @@ def index(request):
         'query': query,
     }
     return render(request, 'voices/index.html', context)
+
+
+def build_voice_data(segments):
+    voice_ids = []
+    voice_segments = []
+    for seg in segments:
+        voice_id = seg['voice_id']
+        voice_ids.append(voice_id)
+        voice_segments.append({
+            "voice_id": voice_id,
+            "start_time": seg['start_time'],
+            "end_time": seg['end_time'],
+        })
+    return voice_ids, voice_segments
 
 
 def upload(request):
