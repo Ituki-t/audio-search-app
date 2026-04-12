@@ -104,10 +104,15 @@ def delete(request, voice_id):
 def detail(request, voice_id):
     voice = get_object_or_404(Voice, pk=voice_id)
     segments = Segment.objects.filter(voice=voice).order_by("id") # start_timeでソートしてもいい
+    start_time = request.GET.get('start_time')
+
     context = {
         'voice': voice,
         'segments': segments,
     }
+    if start_time:
+        context['start_time'] = start_time
+
     return render(request, 'voices/detail.html', context)
 
 

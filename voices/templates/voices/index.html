@@ -35,7 +35,11 @@
                         <tr>
                             <td><a href="{% url 'voices:detail' voice_data.voice.id %}">{{ voice_data.voice.title }}</a></td>
                             <td>{{ voice_data.voice.uploaded_at }}</td>
-                            <td>{{ voice_data.start_time }}</td>
+                            <form method="GET" action="{% url 'voices:detail' voice_data.voice.id %}">
+                                <input type="hidden" name="start_time" value="{{ voice_data.start_time }}">
+                                <!-- <input type="hidden" name="end_time" value="{{ voice_data.end_time }}"> -->
+                                <td><button class="btn btn-link p-0 m-0 align-baseline" type="submit">{{ voice_data.start_time }}</button></td>
+                            </form>
                             <td>{{ voice_data.end_time }}</td>
                             <td><a href="{% url 'voices:delete' voice_data.voice.id %}" class="btn btn-danger btn-sm">削除</a></td>
                         </tr>
