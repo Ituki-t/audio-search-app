@@ -118,18 +118,15 @@ def detail(request, voice_id):
 
 def update_segment_text(request, voice_id, segment_id):
     voice = get_object_or_404(Voice, pk=voice_id)
-    segments = Segment.objects.filter(voice=voice)
-    for seg in segments:
-        segment = get_object_or_404(Segment, pk=seg.id, voice=voice)
-
-        if request.method == 'POST':
-            form = UpdateSegmentTextForm(request.POST, instance=segment)
-            if form.is_valid():
-                form.save()
-                update_audio_document.delay(segment.id)
-                return redirect('voices:detail', voice_id=voice_id)
-        else:
-            form = UpdateSegmentTextForm(instance=segment)
+    segment = get_object_or_404(Segment, pk=segment_id, voice=voice)
+    if request.method == 'POST':
+        form = UpdateSegmentTextForm(request.POST, instance=segment)
+        if form.is_valid():
+            form.save()
+            update_audio_document.delay(segment.id)
+            return redirect('voices:detail', voice_id=voice_id)
+    else:
+        form = UpdateSegmentTextForm(instance=segment)
 
     context = {
         'form': form,
