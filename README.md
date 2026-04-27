@@ -1,5 +1,5 @@
 # audio-search-app
-- [環境構築のGitHubリポジトリ](https://github.com/Ituki-t/audio-search-env-meilisearch.git)
+- [環境構築のGitHubリポジトリ](https://github.com/Ituki-t/audio-search-env.git)
 
 # 仕様書
 ## 概要
