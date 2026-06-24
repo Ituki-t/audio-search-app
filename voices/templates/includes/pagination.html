@@ -1,15 +1,91 @@
-<nav>
-    {% if page_obj.has_previous %}
-        <a href="?page=1">最初</a>
-        <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
-    {% endif %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
 
-    <span>
-        {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
-    </span>
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                {% if query %}
+                <a class="page-link"
+                   href="?text_query={{ query }}&search_engine={{ engine_query }}&page=1">
+                    最初
+                </a>
+                {% else %}
+                <a class="page-link"
+                   href="?page=1">
+                    最初
+                </a>
+                {% endif %}
+            </li>
 
-    {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">次へ</a>
-        <a href="?page={{ page_obj.paginator.num_pages }}">最後</a>
-    {% endif %}
+            <li class="page-item">
+                {% if query %}
+                <a class="page-link"
+                   href="?text_query={{ query }}&search_engine={{ engine_query }}&page={{ page_obj.previous_page_number }}">
+                    前へ
+                </a>
+                {% else %}
+                <a class="page-link"
+                   href="?page={{ page_obj.previous_page_number }}">
+                    前へ
+                </a>
+                {% endif %}
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                {% if query %}
+                <span class="page-link">最初</span>
+                {% else %}
+                <span class="page-link">最初</span>
+                {% endif %}
+            </li>
+
+            <li class="page-item disabled">
+                <span class="page-link">前へ</span>
+            </li>
+        {% endif %}
+
+        <li class="page-item active">
+            <span class="page-link">
+                {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+            </span>
+        </li>
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                {% if query %}
+                <a class="page-link"
+                   href="?text_query={{ query }}&search_engine={{ engine_query }}&page={{ page_obj.next_page_number }}">
+                    次へ
+                </a>
+                {% else %}
+                <a class="page-link"
+                   href="?page={{ page_obj.next_page_number }}">
+                    次へ
+                </a>
+                {% endif %}
+            </li>
+
+            <li class="page-item">
+                {% if query %}
+                <a class="page-link"
+                   href="?text_query={{ query }}&search_engine={{ engine_query }}&page={{ page_obj.paginator.num_pages }}">
+                    最後
+                </a>
+                {% else %}
+                <a class="page-link"
+                   href="?page={{ page_obj.paginator.num_pages }}">
+                    最後
+                </a>
+                {% endif %}
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">次へ</span>
+            </li>
+
+            <li class="page-item disabled">
+                <span class="page-link">最後</span>
+            </li>
+        {% endif %}
+
+    </ul>
 </nav>
