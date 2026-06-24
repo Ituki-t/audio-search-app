@@ -42,6 +42,7 @@
                     </div>
                 </div>
                 <a href ="{% url 'voices:download' voice.id %}" class="btn btn-primary">このファイルをダウンロード</a>
+                <a href="{% url 'voices:edit_segments' voice.id %}">編集ページに移動する</a>
             </div>
             <div class="card-footer">
                 Uploaded at : {{ voice.uploaded_at }}
