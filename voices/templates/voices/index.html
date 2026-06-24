@@ -18,7 +18,7 @@
 
 
 <h2 class="my-5">ファイル一覧</h2>
-        {% if voices or voice_datas %}
+        {% if page_obj %}
         <table class="table">
             <thead>
             <tr>
@@ -30,8 +30,8 @@
             </tr>
             </thead>
             <tbody>
-                {% if voice_datas %}
-                    {% for voice_data in voice_datas %}
+                {% if query %}
+                    {% for voice_data in page_obj %}
                         <tr>
                             <td><a href="{% url 'voices:detail' voice_data.voice.id %}">{{ voice_data.voice.title }}</a></td>
                             <td>{{ voice_data.voice.uploaded_at }}</td>
@@ -45,7 +45,7 @@
                         </tr>
                     {% endfor %}
                 {% else %}
-                    {% for v in voices %}
+                    {% for v in page_obj %}
                         <tr>
                             <td><a href="{% url 'voices:detail' v.id %}">{{v.title}}</a></td>
                             <td>{{v.uploaded_at}}</td>
@@ -60,4 +60,5 @@
         {% else %}
         <p>ファイルは登録されていません</p>
         {% endif %}
+        {% include 'includes/pagination.html' %}
 {% endblock %}

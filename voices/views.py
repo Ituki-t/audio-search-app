@@ -3,6 +3,8 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 import os
 
+from django.core.paginator import Paginator
+
 from django.http import FileResponse
 from .models import Voice
 from .models import Segment
@@ -40,13 +42,20 @@ def index(request):
             segs = search_doc_by_es(query)
             voice_datas = build_voice_datas(segs)
             print("voice_datas is ", voice_datas)
+
+        paginator = Paginator(voice_datas, 5)
     else:
         voices = Voice.objects.all().order_by('-uploaded_at')
+        paginator = Paginator(voices, 5)
+
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     context = {
-        'voices': voices,
         'voice_datas': voice_datas,
         'query': query,
+        'page_obj': page_obj,
     }
     return render(request, 'voices/index.html', context)
 
