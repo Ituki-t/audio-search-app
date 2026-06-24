@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ page_title }}
+{% endblock %}
+
+{% block content %}
+<h1 class="my-5">テキストを編集</h1>
+<form method="post">
+    {% csrf_token %}
+    {% for form in segments_forms %}
+        {{ form.text }}
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">編集</button>
+</form>
+
+{% endblock content %}

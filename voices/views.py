@@ -134,3 +134,37 @@ def update_segment_text(request, voice_id, segment_id):
         'segment': segment,
     }
     return render(request, 'voices/update_text.html', context)
+
+
+
+def edit_segments_text(request, voice_id):
+    voice = get_object_or_404(Voice, pk=voice_id)
+    segments = Segment.objects.filter(voice=voice)
+
+    for segment in segments:
+        if request.method == 'POST':
+            segments_forms = [
+                UpdateSegmentTextForm(
+                    request.POST,
+                    instance=segment,
+                    prefix=f'segment_{segment.id}',
+            ) for segment in segments
+            ]
+            if all(form.is_valid() for form in segments_forms):
+                for form in segments_forms:
+                    form.save()
+                    print(form.cleaned_data)
+                update_audio_document.delay(voice.id)
+                return redirect('voices:detail', voice_id=voice_id)
+        else:
+            segments_forms = [
+                UpdateSegmentTextForm(
+                    instance=segment,
+                    prefix=f'segment_{segment.id}',
+                ) for segment in segments
+            ]
+
+    context = {
+        'segments_forms': segments_forms,
+    }
+    return render(request, 'voices/edit_segments_text.html', context)
